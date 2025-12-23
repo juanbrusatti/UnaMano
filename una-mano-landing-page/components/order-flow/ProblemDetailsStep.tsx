@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Camera, Upload, Clock, Calendar, ArrowLeft, HandHelping } from 'lucide-react';
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { LocationStep } from './LocationStep';
 
 type TimeOption = {
   id: string;
@@ -35,6 +36,8 @@ export function ProblemDetailsStep({ onBack }: { onBack: () => void }) {
     setShowDateInput(option.needsDateInput || false);
   };
 
+  const [showLocationStep, setShowLocationStep] = useState(false);
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     // Aquí manejaremos el envío del formulario
@@ -44,9 +47,20 @@ export function ProblemDetailsStep({ onBack }: { onBack: () => void }) {
       customTime: selectedTime !== 'now' ? customTime : null,
       customDate: selectedTime === 'custom' ? customDate : null,
     });
-    // Navegar a la siguiente pantalla
-    // router.push('/buscar-ayudante');
+    // Mostrar pantalla de ubicación
+    setShowLocationStep(true);
   };
+
+  const handleLocationConfirm = () => {
+    // Aquí iría la lógica para confirmar la ubicación
+    console.log('Ubicación confirmada');
+    // Navegar a la siguiente pantalla
+    // router.push('/siguiente-pantalla');
+  };
+
+  if (showLocationStep) {
+    return <LocationStep onConfirm={handleLocationConfirm} />;
+  }
 
   return (
     <motion.div
@@ -98,13 +112,13 @@ export function ProblemDetailsStep({ onBack }: { onBack: () => void }) {
                 <div className="flex text-gray-600 justify-center">
                   <Camera className="w-10 h-10" />
                 </div>
-                <div className="flex text-sm text-gray-900">
+                <div className="flex text-sm text-gray-600">
                   <label
                     htmlFor="file-upload"
                     className="relative cursor-pointer bg-white rounded-md font-medium text-blue-600 hover:text-blue-500 focus-within:outline-none"
                   >
                     <div className="flex items-center">
-                      <Upload className="w-5 h-5 mr-2" />
+                      <Upload className="w-4 h-4 mr-2" />
                       <span>Subir una foto</span>
                     </div>
                     <input id="file-upload" name="file-upload" type="file" className="sr-only" />

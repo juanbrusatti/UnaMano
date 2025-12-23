@@ -6,6 +6,7 @@ import { Camera, Upload, Clock, Calendar, ArrowLeft, HandHelping } from 'lucide-
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { LocationStep } from './LocationStep';
+import { HelperStep } from './HelperStep';
 
 type TimeOption = {
   id: string;
@@ -37,6 +38,7 @@ export function ProblemDetailsStep({ onBack }: { onBack: () => void }) {
   };
 
   const [showLocationStep, setShowLocationStep] = useState(false);
+  const [showHelperStep, setShowHelperStep] = useState(false);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -54,12 +56,24 @@ export function ProblemDetailsStep({ onBack }: { onBack: () => void }) {
   const handleLocationConfirm = () => {
     // Aquí iría la lógica para confirmar la ubicación
     console.log('Ubicación confirmada');
+    // Ocultar pantalla de ubicación y mostrar pantalla de ayudantes
+    setShowLocationStep(false);
+    setTimeout(() => setShowHelperStep(true), 100);
+  };
+
+  const handleHelperSelect = (helper: any) => {
+    // Aquí iría la lógica para seleccionar un ayudante
+    console.log('Ayudante seleccionado:', helper);
     // Navegar a la siguiente pantalla
-    // router.push('/siguiente-pantalla');
+    // router.push('/confirmacion');
   };
 
   if (showLocationStep) {
     return <LocationStep onConfirm={handleLocationConfirm} />;
+  }
+
+  if (showHelperStep) {
+    return <HelperStep onBack={() => setShowHelperStep(false)} onHelperSelect={handleHelperSelect} />;
   }
 
   return (

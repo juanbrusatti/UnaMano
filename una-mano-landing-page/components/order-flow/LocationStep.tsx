@@ -14,7 +14,7 @@ export function LocationStep({ onConfirm }: { onConfirm: () => void }) {
     const timer = setTimeout(() => {
       setLocationFound(true);
       setIsLoading(false);
-    }, 7000);
+    }, 4000);
 
     return () => clearTimeout(timer);
   }, []);

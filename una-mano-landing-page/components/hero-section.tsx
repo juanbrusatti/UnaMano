@@ -1,7 +1,11 @@
+'use client';
+
 import { Button } from "@/components/ui/button"
 import { HandHelping, Heart } from "lucide-react"
+import { useRouter } from "next/navigation"
 
 export function HeroSection() {
+  const router = useRouter()
   return (
     <section className="min-h-[100dvh] flex flex-col justify-center px-5 py-12 md:px-8 lg:px-16">
       <div className="max-w-4xl mx-auto w-full">
@@ -25,7 +29,11 @@ export function HeroSection() {
         </p>
 
         <div className="flex flex-col sm:flex-row gap-4">
-          <Button size="lg" className="text-lg px-8 py-6 rounded-xl">
+          <Button 
+            size="lg" 
+            className="text-lg px-8 py-6 rounded-xl"
+            onClick={() => router.push('/pedido')}
+          >
             <HandHelping className="w-5 h-5 mr-2" />
             Pedir una mano
           </Button>

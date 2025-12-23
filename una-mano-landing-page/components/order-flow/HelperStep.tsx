@@ -197,7 +197,7 @@ export function HelperStep({ onBack, onHelperSelect }: { onBack: () => void; onH
           <motion.button
             onClick={handleSubmit}
             disabled={!selectedHelper}
-            className="w-full py-4 text-lg font-semibold bg-blue-600 hover:bg-blue-700 disabled:bg-gray-300 disabled:cursor-not-allowed transition-colors rounded-lg"
+            className="w-full py-4 text-lg font-semibold bg-blue-400 hover:bg-blue-700 disabled:bg-gray-300 disabled:cursor-not-allowed transition-colors rounded-lg"
             whileHover={{ scale: selectedHelper ? 1.02 : 1 }}
             whileTap={{ scale: selectedHelper ? 0.98 : 1 }}
           >

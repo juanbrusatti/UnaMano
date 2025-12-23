@@ -7,6 +7,7 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { LocationStep } from './LocationStep';
 import { HelperStep } from './HelperStep';
+import { ConfirmationStep } from './ConfirmationStep';
 
 type TimeOption = {
   id: string;
@@ -39,6 +40,8 @@ export function ProblemDetailsStep({ onBack }: { onBack: () => void }) {
 
   const [showLocationStep, setShowLocationStep] = useState(false);
   const [showHelperStep, setShowHelperStep] = useState(false);
+  const [showConfirmationStep, setShowConfirmationStep] = useState(false);
+  const [selectedHelper, setSelectedHelper] = useState<any>(null);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -62,10 +65,12 @@ export function ProblemDetailsStep({ onBack }: { onBack: () => void }) {
   };
 
   const handleHelperSelect = (helper: any) => {
-    // Aquí iría la lógica para seleccionar un ayudante
+    // Guardar el ayudante seleccionado
+    setSelectedHelper(helper);
     console.log('Ayudante seleccionado:', helper);
-    // Navegar a la siguiente pantalla
-    // router.push('/confirmacion');
+    // Ocultar pantalla de ayudantes y mostrar confirmación
+    setShowHelperStep(false);
+    setTimeout(() => setShowConfirmationStep(true), 100);
   };
 
   if (showLocationStep) {
@@ -74,6 +79,18 @@ export function ProblemDetailsStep({ onBack }: { onBack: () => void }) {
 
   if (showHelperStep) {
     return <HelperStep onBack={() => setShowHelperStep(false)} onHelperSelect={handleHelperSelect} />;
+  }
+
+  if (showConfirmationStep && selectedHelper) {
+    return (
+      <ConfirmationStep 
+        helper={selectedHelper} 
+        onBack={() => {
+          setShowConfirmationStep(false);
+          setShowHelperStep(true);
+        }} 
+      />
+    );
   }
 
   return (

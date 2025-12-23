@@ -98,17 +98,19 @@ export function ProblemDetailsStep({ onBack }: { onBack: () => void }) {
                 <div className="flex text-gray-600 justify-center">
                   <Camera className="w-10 h-10" />
                 </div>
-                <div className="flex text-sm text-gray-600">
+                <div className="flex text-sm text-gray-900">
                   <label
                     htmlFor="file-upload"
                     className="relative cursor-pointer bg-white rounded-md font-medium text-blue-600 hover:text-blue-500 focus-within:outline-none"
                   >
-                    <span>Subir una foto</span>
+                    <div className="flex items-center">
+                      <Upload className="w-5 h-5 mr-2" />
+                      <span>Subir una foto</span>
+                    </div>
                     <input id="file-upload" name="file-upload" type="file" className="sr-only" />
                   </label>
-                  <p className="pl-1">o arrastrá y soltá</p>
                 </div>
-                <p className="text-xs text-gray-500">PNG, JPG, GIF hasta 10MB</p>
+                <p className="text-xs text-center text-gray-500">PNG, JPG, GIF hasta 10MB</p>
               </div>
             </div>
           </div>

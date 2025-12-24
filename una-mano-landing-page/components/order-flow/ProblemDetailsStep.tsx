@@ -8,6 +8,7 @@ import { useRouter } from 'next/navigation';
 import { LocationStep } from './LocationStep';
 import { HelperStep } from './HelperStep';
 import { ConfirmationStep } from './ConfirmationStep';
+import { WaitingStep } from './WaitingStep';
 
 type TimeOption = {
   id: string;
@@ -41,6 +42,7 @@ export function ProblemDetailsStep({ onBack }: { onBack: () => void }) {
   const [showLocationStep, setShowLocationStep] = useState(false);
   const [showHelperStep, setShowHelperStep] = useState(false);
   const [showConfirmationStep, setShowConfirmationStep] = useState(false);
+  const [showWaitingStep, setShowWaitingStep] = useState(false);
   const [selectedHelper, setSelectedHelper] = useState<any>(null);
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -73,6 +75,32 @@ export function ProblemDetailsStep({ onBack }: { onBack: () => void }) {
     setTimeout(() => setShowConfirmationStep(true), 100);
   };
 
+  const handleConfirmationComplete = () => {
+    // Ocultar confirmación y mostrar pantalla de espera
+    setShowConfirmationStep(false);
+    setTimeout(() => setShowWaitingStep(true), 100);
+  };
+
+  const handleWaitingCancel = () => {
+    // Volver a la lista de ayudantes
+    setShowWaitingStep(false);
+    setShowHelperStep(true);
+  };
+
+  const handleWaitingTimeout = () => {
+    // El ayudante no respondió, volver a lista
+    console.log('El ayudante no respondió');
+    setShowWaitingStep(false);
+    setShowHelperStep(true);
+  };
+
+  const handleWaitingAccepted = () => {
+    // El ayudante aceptó - aquí iría la siguiente fase
+    console.log('¡El ayudante aceptó el pedido!');
+    // Por ahora volvemos al inicio
+    router.push('/');
+  };
+
   if (showLocationStep) {
     return <LocationStep onConfirm={handleLocationConfirm} />;
   }
@@ -88,7 +116,19 @@ export function ProblemDetailsStep({ onBack }: { onBack: () => void }) {
         onBack={() => {
           setShowConfirmationStep(false);
           setShowHelperStep(true);
-        }} 
+        }}
+        onConfirm={handleConfirmationComplete}
+      />
+    );
+  }
+
+  if (showWaitingStep && selectedHelper) {
+    return (
+      <WaitingStep 
+        helper={selectedHelper} 
+        onCancel={handleWaitingCancel}
+        onTimeout={handleWaitingTimeout}
+        onAccepted={handleWaitingAccepted}
       />
     );
   }

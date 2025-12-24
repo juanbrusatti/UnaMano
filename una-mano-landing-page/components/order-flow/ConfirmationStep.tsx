@@ -3,6 +3,7 @@
 import { motion } from 'framer-motion';
 import { useRouter } from 'next/navigation';
 import { CheckCircle, MapPin, ArrowLeft, Home } from 'lucide-react';
+import { useEffect } from 'react';
 
 interface Helper {
   id: string;
@@ -16,10 +17,12 @@ interface Helper {
 
 export function ConfirmationStep({ 
   helper, 
-  onBack 
+  onBack,
+  onConfirm 
 }: { 
   helper: Helper; 
   onBack: () => void;
+  onConfirm: () => void;
 }) {
   const router = useRouter();
 
@@ -30,6 +33,15 @@ export function ConfirmationStep({
   const getTypeLabel = (type: 'ayudante' | 'tecnico') => {
     return type === 'tecnico' ? 'Técnico' : 'Ayudante';
   };
+
+  // Auto-avanzar a WaitingStep después de 5 segundos
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      onConfirm();
+    }, 5000);
+
+    return () => clearTimeout(timer);
+  }, [onConfirm]);
 
   return (
     <motion.div
@@ -74,7 +86,7 @@ export function ConfirmationStep({
             transition={{ delay: 0.4, duration: 0.5 }}
             className="text-3xl font-bold text-gray-900 mb-6"
           >
-            Pedido enviado
+            Enviado
           </motion.h1>
 
           {/* 3. Subtexto tranquilizador - EL ALMA DE LA PANTALLA */}

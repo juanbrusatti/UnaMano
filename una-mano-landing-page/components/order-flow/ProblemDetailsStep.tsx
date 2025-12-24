@@ -9,6 +9,7 @@ import { LocationStep } from './LocationStep';
 import { HelperStep } from './HelperStep';
 import { ConfirmationStep } from './ConfirmationStep';
 import { WaitingStep } from './WaitingStep';
+import { AcceptedStep } from './AcceptedStep';
 
 type TimeOption = {
   id: string;
@@ -43,6 +44,7 @@ export function ProblemDetailsStep({ onBack }: { onBack: () => void }) {
   const [showHelperStep, setShowHelperStep] = useState(false);
   const [showConfirmationStep, setShowConfirmationStep] = useState(false);
   const [showWaitingStep, setShowWaitingStep] = useState(false);
+  const [showAcceptedStep, setShowAcceptedStep] = useState(false);
   const [selectedHelper, setSelectedHelper] = useState<any>(null);
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -95,8 +97,22 @@ export function ProblemDetailsStep({ onBack }: { onBack: () => void }) {
   };
 
   const handleWaitingAccepted = () => {
-    // El ayudante aceptó - aquí iría la siguiente fase
+    // El ayudante aceptó - mostrar pantalla de aceptación
     console.log('¡El ayudante aceptó el pedido!');
+    setShowWaitingStep(false);
+    setTimeout(() => setShowAcceptedStep(true), 100);
+  };
+
+  const handleAcceptedCancel = () => {
+    // Cancelar ayuda - volver a lista de ayudantes
+    console.log('Ayuda cancelada desde pantalla de aceptación');
+    setShowAcceptedStep(false);
+    setShowHelperStep(true);
+  };
+
+  const handleAcceptedGoToChat = () => {
+    // Ir al chat (aquí iría la pantalla de chat)
+    console.log('Abriendo chat con el ayudante');
     // Por ahora volvemos al inicio
     router.push('/');
   };
@@ -129,6 +145,16 @@ export function ProblemDetailsStep({ onBack }: { onBack: () => void }) {
         onCancel={handleWaitingCancel}
         onTimeout={handleWaitingTimeout}
         onAccepted={handleWaitingAccepted}
+      />
+    );
+  }
+
+  if (showAcceptedStep && selectedHelper) {
+    return (
+      <AcceptedStep 
+        helper={selectedHelper} 
+        onCancel={handleAcceptedCancel}
+        onGoToChat={handleAcceptedGoToChat}
       />
     );
   }

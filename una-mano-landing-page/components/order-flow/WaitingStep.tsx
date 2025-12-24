@@ -27,13 +27,13 @@ export function WaitingStep({
 }) {
   const [elapsedTime, setElapsedTime] = useState(0);
 
-  // Simulación de polling cada 5 segundos
+  // Simulación de polling cada 1 segundo
   useEffect(() => {
     const interval = setInterval(() => {
       setElapsedTime(prev => prev + 1);
       
-      // Simulación: después de 30 segundos, el ayudante responde
-      if (elapsedTime >= 30) {
+      // Simulación: después de 10 segundos, el ayudante responde
+      if (elapsedTime >= 10) {
         // 80% de probabilidad de aceptar
         if (Math.random() > 0.2) {
           onAccepted();

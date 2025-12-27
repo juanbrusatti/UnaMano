@@ -37,7 +37,12 @@ export function HeroSection() {
             <HandHelping className="w-5 h-5 mr-2" />
             Pedir una mano
           </Button>
-          <Button variant="outline" size="lg" className="text-lg px-8 py-6 rounded-xl border-2 bg-transparent">
+          <Button 
+            variant="outline" 
+            size="lg" 
+            className="text-lg px-8 py-6 rounded-xl border-2 bg-transparent"
+            onClick={() => router.push('/ayudante')}
+          >
             <Heart className="w-5 h-5 mr-2" />
             Quiero ayudar
           </Button>

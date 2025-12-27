@@ -1,7 +1,11 @@
+"use client"
+
 import { Button } from "@/components/ui/button"
 import { HandHelping, Heart } from "lucide-react"
+import { useRouter } from "next/navigation"
 
 export function FinalCTA() {
+  const router = useRouter()
   return (
     <section className="px-5 py-20 md:px-8 md:py-28 lg:px-16 bg-primary text-primary-foreground">
       <div className="max-w-3xl mx-auto text-center">
@@ -22,6 +26,7 @@ export function FinalCTA() {
             size="lg"
             variant="outline"
             className="text-lg px-8 py-6 rounded-xl border-2 border-primary-foreground text-primary-foreground bg-transparent hover:bg-primary-foreground/10"
+            onClick={() => router.push('/ayudante')}
           >
             <Heart className="w-5 h-5 mr-2" />
             Quiero ayudar

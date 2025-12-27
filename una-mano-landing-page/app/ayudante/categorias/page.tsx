@@ -90,7 +90,7 @@ export default function CategoriasPage() {
           </div>
           
           <Button
-            onClick={handleContinue}
+            onClick={() => router.push('/ayudante/disponibilidad')}
             disabled={selectedCategories.length === 0 || isSubmitting}
             className="w-full py-6 text-lg font-medium transition-colors"
           >
@@ -99,6 +99,7 @@ export default function CategoriasPage() {
             ) : (
               `Continuar con ${selectedCategories.length} ${selectedCategories.length === 1 ? 'categoría' : 'categorías'}`
             )}
+
           </Button>
           
           <p className="mt-4 text-center text-sm text-gray-500">

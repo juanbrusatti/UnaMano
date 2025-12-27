@@ -20,7 +20,7 @@ import {
   SelectValue,
 } from '@/components/ui/select'
 import { Textarea } from '@/components/ui/textarea'
-import { Loader2 } from 'lucide-react'
+import { Loader2, MessageCircle, XCircle } from 'lucide-react'
 
 export default function EnCaminoPage() {
   const router = useRouter()
@@ -73,18 +73,20 @@ export default function EnCaminoPage() {
 
         <CardContent className="px-8 pb-8">
           <div className="grid gap-4">
-            <Button type="button" size="lg" className="h-14 text-lg" onClick={handleGoToChat}>
-              💬 Ir al chat
+            <Button type="button" size="lg" className="h-12" onClick={handleGoToChat}>
+              <MessageCircle className="h-5 w-5 mr-2" />
+              Ir al chat
             </Button>
 
             <Button
               type="button"
               size="lg"
               variant="destructive"
-              className="h-14 text-lg"
+              className="h-12"
               onClick={() => setIsCancelOpen(true)}
             >
-              ❌ Cancelar ayuda
+              <XCircle className="h-5 w-5 mr-2" />
+              Cancelar ayuda
             </Button>
           </div>
         </CardContent>

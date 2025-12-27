@@ -6,6 +6,14 @@ import { Camera, Upload, Clock, Calendar, ArrowLeft, HandHelping } from 'lucide-
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { LocationStep } from './LocationStep';
+import { HelperStep } from './HelperStep';
+import { ConfirmationStep } from './ConfirmationStep';
+import { WaitingStep } from './WaitingStep';
+import { AcceptedStep } from './AcceptedStep';
+import { RejectedStep } from './RejectedStep';
+import { ChatStep } from './ChatStep';
+import { CompletedStep } from './CompletedStep';
+import { ReportStep } from './ReportStep';
 
 type TimeOption = {
   id: string;
@@ -37,6 +45,15 @@ export function ProblemDetailsStep({ onBack }: { onBack: () => void }) {
   };
 
   const [showLocationStep, setShowLocationStep] = useState(false);
+  const [showHelperStep, setShowHelperStep] = useState(false);
+  const [showConfirmationStep, setShowConfirmationStep] = useState(false);
+  const [showWaitingStep, setShowWaitingStep] = useState(false);
+  const [showAcceptedStep, setShowAcceptedStep] = useState(false);
+  const [showRejectedStep, setShowRejectedStep] = useState(false);
+  const [showChatStep, setShowChatStep] = useState(false);
+  const [showCompletedStep, setShowCompletedStep] = useState(false);
+  const [showReportStep, setShowReportStep] = useState(false);
+  const [selectedHelper, setSelectedHelper] = useState<any>(null);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -54,12 +71,214 @@ export function ProblemDetailsStep({ onBack }: { onBack: () => void }) {
   const handleLocationConfirm = () => {
     // Aquí iría la lógica para confirmar la ubicación
     console.log('Ubicación confirmada');
-    // Navegar a la siguiente pantalla
-    // router.push('/siguiente-pantalla');
+    // Ocultar pantalla de ubicación y mostrar pantalla de ayudantes
+    setShowLocationStep(false);
+    setTimeout(() => setShowHelperStep(true), 100);
+  };
+
+  const handleHelperSelect = (helper: any) => {
+    // Guardar el ayudante seleccionado
+    setSelectedHelper(helper);
+    console.log('Ayudante seleccionado:', helper);
+    // Ocultar pantalla de ayudantes y mostrar confirmación
+    setShowHelperStep(false);
+    setTimeout(() => setShowConfirmationStep(true), 100);
+  };
+
+  const handleConfirmationComplete = () => {
+    // Ocultar confirmación y mostrar pantalla de espera
+    setShowConfirmationStep(false);
+    setTimeout(() => setShowWaitingStep(true), 100);
+  };
+
+  const handleWaitingCancel = () => {
+    // Volver a la lista de ayudantes
+    setShowWaitingStep(false);
+    setShowHelperStep(true);
+  };
+
+  const handleWaitingTimeout = () => {
+    // El ayudante no respondió - mostrar pantalla de rechazo
+    console.log('El ayudante no respondió');
+    setShowWaitingStep(false);
+    setTimeout(() => setShowRejectedStep(true), 100);
+  };
+
+  const handleWaitingRejected = () => {
+    // El ayudante rechazó - mostrar pantalla de rechazo
+    console.log('El ayudante rechazó el pedido');
+    setShowWaitingStep(false);
+    setTimeout(() => setShowRejectedStep(true), 100);
+  };
+
+  const handleWaitingAccepted = () => {
+    // El ayudante aceptó - mostrar pantalla de aceptación
+    console.log('¡El ayudante aceptó el pedido!');
+    setShowWaitingStep(false);
+    setTimeout(() => setShowAcceptedStep(true), 100);
+  };
+
+  const handleAcceptedCancel = () => {
+    // Cancelar ayuda - volver a lista de ayudantes
+    console.log('Ayuda cancelada desde pantalla de aceptación');
+    setShowAcceptedStep(false);
+    setShowHelperStep(true);
+  };
+
+  const handleAcceptedGoToChat = () => {
+    // Ir al chat
+    console.log('Abriendo chat con el ayudante');
+    setShowAcceptedStep(false);
+    setTimeout(() => setShowChatStep(true), 100);
+  };
+
+  const handleRejectedFindAnother = () => {
+    // Buscar otro ayudante
+    console.log('Buscando otro ayudante');
+    setShowRejectedStep(false);
+    setShowHelperStep(true);
+  };
+
+  const handleRejectedRetry = () => {
+    // Reintentar con el mismo ayudante
+    console.log('Reintentando con el mismo ayudante');
+    setShowRejectedStep(false);
+    setTimeout(() => setShowWaitingStep(true), 100);
+  };
+
+  const handleRejectedCancel = () => {
+    // Cancelar pedido
+    console.log('Pedido cancelado desde pantalla de rechazo');
+    setShowRejectedStep(false);
+    setShowHelperStep(true);
+  };
+
+  const handleChatBack = () => {
+    // Volver desde el chat
+    console.log('Volviendo desde chat');
+    setShowChatStep(false);
+    setShowAcceptedStep(true);
+  };
+
+  const handleChatComplete = () => {
+    // Finalizar ayuda - mostrar pantalla de completado
+    console.log('Finalizando ayuda');
+    setShowChatStep(false);
+    setTimeout(() => setShowCompletedStep(true), 100);
+  };
+
+  const handleChatReport = () => {
+    // Reportar problema desde el chat
+    console.log('Reportando problema desde chat');
+    setShowChatStep(false);
+    setTimeout(() => setShowReportStep(true), 100);
+  };
+
+  const handleCompletedReport = () => {
+    // Reportar problema desde finalización
+    console.log('Reportando problema desde finalización');
+    setShowCompletedStep(false);
+    setTimeout(() => setShowReportStep(true), 100);
+  };
+
+  const handleReportSubmit = (report: { type: string; description: string }) => {
+    // Manejar envío del reporte
+    console.log('Reporte enviado:', report);
+    setShowReportStep(false);
+    // Volver al inicio o mostrar confirmación
+    router.push('/');
   };
 
   if (showLocationStep) {
     return <LocationStep onConfirm={handleLocationConfirm} />;
+  }
+
+  if (showHelperStep) {
+    return <HelperStep onBack={() => setShowHelperStep(false)} onHelperSelect={handleHelperSelect} />;
+  }
+
+  if (showConfirmationStep && selectedHelper) {
+    return (
+      <ConfirmationStep 
+        helper={selectedHelper} 
+        onBack={() => {
+          setShowConfirmationStep(false);
+          setShowHelperStep(true);
+        }}
+        onConfirm={handleConfirmationComplete}
+      />
+    );
+  }
+
+  if (showWaitingStep && selectedHelper) {
+    return (
+      <WaitingStep 
+        helper={selectedHelper} 
+        onCancel={handleWaitingCancel}
+        onTimeout={handleWaitingTimeout}
+        onAccepted={handleWaitingAccepted}
+      />
+    );
+  }
+
+  if (showAcceptedStep && selectedHelper) {
+    return (
+      <AcceptedStep 
+        helper={selectedHelper} 
+        onCancel={handleAcceptedCancel}
+        onGoToChat={handleAcceptedGoToChat}
+      />
+    );
+  }
+
+  if (showRejectedStep && selectedHelper) {
+    return (
+      <RejectedStep 
+        helper={selectedHelper} 
+        reason="timeout"
+        onFindAnother={handleRejectedFindAnother}
+        onRetry={handleRejectedRetry}
+        onCancel={handleRejectedCancel}
+      />
+    );
+  }
+
+  if (showChatStep && selectedHelper) {
+    return (
+      <ChatStep 
+        helper={selectedHelper} 
+        onBack={handleChatBack}
+        onComplete={handleChatComplete}
+        onReport={handleChatReport}
+      />
+    );
+  }
+
+  if (showCompletedStep && selectedHelper) {
+    return (
+      <CompletedStep 
+        helper={selectedHelper} 
+        onBack={() => {
+          setShowCompletedStep(false);
+          setShowChatStep(true);
+        }}
+        onReport={handleCompletedReport}
+      />
+    );
+  }
+
+  if (showReportStep && selectedHelper) {
+    return (
+      <ReportStep 
+        helper={selectedHelper} 
+        onBack={() => {
+          setShowReportStep(false);
+          // Volver a la pantalla anterior (chat o completed)
+          setShowChatStep(true);
+        }}
+        onSubmit={handleReportSubmit}
+      />
+    );
   }
 
   return (

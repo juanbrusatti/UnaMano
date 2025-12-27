@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
 import { Loader2, CheckCircle2, AlertCircle } from 'lucide-react';
 
 export default function DisponibilidadPage() {
@@ -121,6 +122,17 @@ export default function DisponibilidadPage() {
               'Cuando actives la disponibilidad, podrás recibir solicitudes de ayuda cercanas.'
             )}
           </p>
+
+          <div className="mt-6">
+            <Button
+              type="button"
+              variant="outline"
+              className="w-full"
+              onClick={() => router.push('/ayudante/pedido-entrante')}
+            >
+              Simular pedido entrante
+            </Button>
+          </div>
         </CardContent>
       </Card>
     </div>

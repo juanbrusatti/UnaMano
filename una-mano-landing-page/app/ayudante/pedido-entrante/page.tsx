@@ -98,7 +98,9 @@ export default function PedidoEntrantePage() {
       await new Promise((r) => setTimeout(r, 350))
       setDecision('accepted')
       setTimeout(() => {
-        router.push('/ayudante/disponibilidad')
+        const next = new URLSearchParams()
+        next.set('client', request.clientName)
+        router.push(`/ayudante/en-camino?${next.toString()}`)
       }, 600)
     } finally {
       setIsSubmitting(false)

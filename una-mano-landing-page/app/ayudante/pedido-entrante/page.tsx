@@ -13,7 +13,15 @@ import {
   DialogTitle,
 } from '@/components/ui/dialog'
 import { Input } from '@/components/ui/input'
-import { AlertCircle, Clock, MapPin, Navigation, UserRound } from 'lucide-react'
+import {
+  AlertCircle,
+  CheckCircle2,
+  Clock,
+  MapPin,
+  Navigation,
+  UserRound,
+  XCircle,
+} from 'lucide-react'
 
 type IncomingRequest = {
   id: string
@@ -236,7 +244,8 @@ export default function PedidoEntrantePage() {
                 disabled={expired || decision !== null || isSubmitting}
                 onClick={handleAccept}
               >
-                ✅ Aceptar
+                <CheckCircle2 className="h-5 w-5 mr-2" />
+                Aceptar
               </Button>
 
               <Button
@@ -247,7 +256,8 @@ export default function PedidoEntrantePage() {
                 disabled={expired || decision !== null || isSubmitting}
                 onClick={handleReject}
               >
-                ❌ Rechazar
+                <XCircle className="h-5 w-5 mr-2" />
+                Rechazar
               </Button>
             </div>
 
